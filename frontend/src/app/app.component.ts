@@ -1,12 +1,13 @@
 import { Component, OnInit, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import gsap from 'gsap';
 import { CommonModule } from '@angular/common'; 
-import { ApiService } from './api.service';
+import { ApiService } from './services/api.service';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterOutlet],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
