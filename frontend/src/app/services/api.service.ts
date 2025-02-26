@@ -24,8 +24,16 @@ export class ApiService {
     return this.http.get(`${this.apiUrl}/posts`);
   }
 
-  createPost(title: string, content: string) {
-    return this.http.post(`${this.apiUrl}/posts`, { title, content });
+  createPost(post: any) {
+    return this.http.post(`${this.apiUrl}/posts`, post);
+  }
+  
+  updatePost(id: number, post: any) {
+    return this.http.put(`${this.apiUrl}/posts/${id}`, post);
+  }
+
+  getPost(id: number) {
+    return this.http.get(`${this.apiUrl}/posts/${id}`);
   }
 
   getData(): Observable<any> {  
