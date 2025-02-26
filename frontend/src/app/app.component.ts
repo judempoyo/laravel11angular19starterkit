@@ -5,6 +5,8 @@ import { ApiService } from './services/api.service';
 import { isPlatformBrowser } from '@angular/common';
 import { LocalStorageService } from './services/local-storage.service';
 import { RouterOutlet } from '@angular/router';
+import { AuthService } from './services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -17,15 +19,24 @@ export class AppComponent implements OnInit, AfterViewInit {
   data: any;
   title = 'frontend';
 
+  isAuthenticated: boolean = false;
+
 
   
-  constructor(private apiService: ApiService, public localStorageService: LocalStorageService) {
+  constructor(  private authService: AuthService,
+    private router: Router, public localStorageService: LocalStorageService,@Inject(PLATFORM_ID) private platformId: Object) {
 
   }
   
   ngOnInit(): void {
-    this.localStorageService.initTheme();
-    this.fetchData();
+    if (isPlatformBrowser(this.platformId)) {
+      // Accès au DOM uniquement côté client
+      this.localStorageService.initTheme();
+    }
+
+    this.authService.isAuthenticated$.subscribe((isAuth) => {
+      this.isAuthenticated = isAuth;
+    });
   }
 
   @ViewChild('animatedText') animatedText!: ElementRef;
@@ -38,14 +49,9 @@ export class AppComponent implements OnInit, AfterViewInit {
     gsap.from(this.animatedText.nativeElement, { opacity: 0, y: -50, duration: 1 });
   }
 
-  fetchData(): void {
-    this.apiService.getData().subscribe(
-      (response) => {
-        this.data = response;
-      },
-      (error) => {
-        console.error('Erreur lors de la récupération des données', error);
-      }
-    );
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
+  
 }

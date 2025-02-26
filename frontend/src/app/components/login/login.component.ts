@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { ApiService } from '../../services/api.service';
-import { Router } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule], 
+  imports: [FormsModule, RouterModule], 
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
@@ -14,17 +15,10 @@ export class LoginComponent {
   email: string = '';
   password: string = '';
 
-  constructor(private apiService: ApiService, private router: Router) {}
+  constructor(private authService: AuthService) {}
 
-  onSubmit() {
-    this.apiService.login(this.email, this.password).subscribe({
-      next: (response: any) => {
-        localStorage.setItem('token', response.token);
-        this.router.navigate(['/posts']);
-      },
-      error: (error) => {
-        console.error('Login failed', error);
-      }
-    });
+  onSubmit(): void {
+    console.log('Tentative de connexion avec :', { email: this.email, password: this.password });
+    this.authService.login(this.email, this.password);
   }
 }
