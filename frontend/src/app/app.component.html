@@ -1,0 +1,22 @@
+<h1 class="text-3xl font-bold underline">{{ title }}</h1>
+
+<!-- Vérifie si les données existent avant de les afficher -->
+<div *ngIf="data; else loading">
+  <h2>Données récupérées :</h2>
+  <pre>{{ data | json }}</pre> <!-- Affichage brut en JSON -->
+
+  <!-- Affichage sous forme de liste si `data` est un tableau -->
+  <ul *ngIf="data.length">
+    <li *ngFor="let item of data">
+      <strong>ID:</strong> {{ item.id }} - <strong>Nom:</strong> {{ item.name }}
+    </li>
+  </ul>
+</div>
+
+<!-- Message de chargement si `data` est encore vide -->
+<ng-template #loading>
+  <p>Chargement des données...</p>
+</ng-template>
+
+<h1 #animatedText class="text-4xl font-bold text-green-500">Bienvenue sur mon site !</h1>
+
