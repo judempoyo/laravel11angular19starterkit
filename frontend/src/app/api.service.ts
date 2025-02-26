@@ -9,9 +9,26 @@ export class ApiService {
 
   private apiUrl = 'http://localhost:8000/api';
 
-  constructor(private http: HttpClient) {} // Correction de la position de la méthode
+  constructor(private http: HttpClient) {}  
 
-  getData(): Observable<any> { // Déplacement de getData() en dehors du constructeur
+
+  login(email: string, password: string) {
+    return this.http.post(`${this.apiUrl}/login`, { email, password });
+  }
+
+  register(name: string, email: string, password: string) {
+    return this.http.post(`${this.apiUrl}/register`, { name, email, password });
+  }
+
+  getPosts() {
+    return this.http.get(`${this.apiUrl}/posts`);
+  }
+
+  createPost(title: string, content: string) {
+    return this.http.post(`${this.apiUrl}/posts`, { title, content });
+  }
+
+  getData(): Observable<any> {  
     return this.http.get(`${this.apiUrl}/`);
   }
 }

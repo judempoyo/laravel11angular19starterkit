@@ -36,4 +36,16 @@ export class AppComponent implements OnInit,AfterViewInit {
       }
     );
   }
+
+  login() {
+    this.apiService.login('john@example.com', 'password123').subscribe(response => {
+      console.log('Login successful', response);
+    });
+  }
+
+  getPosts() {
+    this.apiService.getPosts().subscribe(response => {
+      console.log('Posts', response);
+    });
+  }
 }
