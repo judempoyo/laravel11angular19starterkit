@@ -1,7 +1,9 @@
-import { Component, OnInit, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ElementRef, ViewChild,  HostBinding, effect, signal, PLATFORM_ID, Inject } from '@angular/core';
 import gsap from 'gsap';
 import { CommonModule } from '@angular/common';
 import { ApiService } from './services/api.service';
+import { isPlatformBrowser } from '@angular/common';
+import { LocalStorageService } from './services/local-storage.service';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
@@ -15,9 +17,14 @@ export class AppComponent implements OnInit, AfterViewInit {
   data: any;
   title = 'frontend';
 
-  constructor(private apiService: ApiService) {}
 
+  
+  constructor(private apiService: ApiService, public localStorageService: LocalStorageService) {
+
+  }
+  
   ngOnInit(): void {
+    this.localStorageService.initTheme();
     this.fetchData();
   }
 
