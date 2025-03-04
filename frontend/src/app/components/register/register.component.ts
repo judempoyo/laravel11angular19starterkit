@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { ApiService } from '../../services/api.service';
-import { Router } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-
+import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [FormsModule], 
+  imports: [FormsModule, RouterModule], 
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
@@ -15,16 +15,9 @@ export class RegisterComponent {
   email: string = '';
   password: string = '';
 
-  constructor(private apiService: ApiService, private router: Router) {}
+  constructor(private authService: AuthService) {}
 
-  onSubmit() {
-    this.apiService.register(this.name, this.email, this.password).subscribe({
-      next: (response) => {
-        this.router.navigate(['/login']);
-      },
-      error: (error) => {
-        console.error('Registration failed', error);
-      }
-    });
+  onSubmit(): void {
+    this.authService.register(this.name, this.email, this.password);
   }
 }

@@ -4,10 +4,10 @@ import { RegisterComponent } from './components/register/register.component';
 import { PostsComponent } from './components/posts/posts.component';
 import { PostDetailComponent } from './components/post-detail/post-detail.component';
 import { PostFormComponent } from './components/post-form/post-form.component';
-import { AppComponent } from './app.component';
+import { HomeComponent } from './components/home/home.component';
 
 export const routes: Routes = [
-  { path: '', component: AppComponent, pathMatch: 'full' }, 
+  { path: '', component: HomeComponent, pathMatch: 'full' }, 
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'posts', component: PostsComponent },
