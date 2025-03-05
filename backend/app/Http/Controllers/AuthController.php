@@ -21,7 +21,7 @@ class AuthController extends Controller
             $validatedData = $request->validate([
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|unique:users,email',
-                'password' => 'required|string|min:8|confirmed',
+                'password' => 'required|string|min:8',
             ]);
 
             $user = User::create([
@@ -72,7 +72,7 @@ class AuthController extends Controller
             return response()->json([
                 'token' => $token,
                 'user' => $user->only(['id', 'name', 'email']),
-                'token_type' => 'Bearer' // Ajout du type de token
+                'token_type' => 'Bearer' 
             ]);
     
         } catch (ValidationException $e) {
