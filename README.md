@@ -28,7 +28,7 @@ This starter kit is designed to help developers quickly set up a new project wit
 - Pre-configured authentication
 - RESTful API setup
 - Basic CRUD operations
-- Responsive design with Angular Material
+- Responsive design with tailwindcss 
 
 ## Installation
 
