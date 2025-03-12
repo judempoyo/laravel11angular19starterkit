@@ -1,0 +1,20 @@
+<div class="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-600">
+  <div class="p-8 text-center bg-white rounded-lg shadow-2xl dark:bg-gray-800 w-96">
+    <div class="w-24 h-24 mx-auto mb-6 overflow-hidden rounded-full">
+      <img
+        [src]="user?.profilePicture || 'https://via.placeholder.com/150'"
+        alt="Profile Picture"
+        class="object-cover w-full h-full"
+      />
+    </div>
+    <h2 class="text-2xl font-bold text-gray-800 dark:text-white">{{ user?.name || 'Utilisateur' }}</h2>
+    <p class="mt-2 text-gray-600 dark:text-gray-300">{{ user?.email || 'Aucun email' }}</p>
+    <div class="mt-6">
+      <button
+        class="px-6 py-2 text-white transition-colors bg-blue-500 rounded-lg hover:bg-blue-600"
+      >
+        Modifier le profil
+      </button>
+    </div>
+  </div>
+</div>

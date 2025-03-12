@@ -32,14 +32,15 @@ export class AuthService {
 
   login(email: string, password: string) {
     console.log('Tentative de connexion avec :', { email, password }); 
-    return this.http.post<{ token: string }>(`${this.apiUrl}/login`, { email, password }).subscribe({
+    return this.http.post<{ token: string, user: any }>(`${this.apiUrl}/login`, { email, password }).subscribe({
       next: (response) => {
         console.log('Réponse de l\'API :', response); 
         if (isPlatformBrowser(this.platformId)) { 
           localStorage.setItem('token', response.token);
+          localStorage.setItem('user', JSON.stringify(response.user)); // Stocker les données de l'utilisateur
         }
         this.isAuthenticatedSubject.next(true);
-        this.errorMessageSubject.next(null); // Clear any previous error message
+        this.errorMessageSubject.next(null); 
         this.router.navigate(['/']);
       },
       error: (error) => {
@@ -48,7 +49,6 @@ export class AuthService {
       }
     });
   }
-
   register(name: string, email: string, password: string) {
     console.log('Tentative d\'inscription avec :', { name, email, password }); 
     return this.http.post(`${this.apiUrl}/register`, { name, email, password }).subscribe({
@@ -64,11 +64,23 @@ export class AuthService {
     });
   }
 
+  isAuthenticated(): boolean {
+    return this.isAuthenticatedSubject.value; // Renvoie la valeur actuelle du BehaviorSubject
+  } 
   logout(): void {
     if (isPlatformBrowser(this.platformId)) { 
       localStorage.removeItem('token');
+      localStorage.removeItem('user');
     }
     this.isAuthenticatedSubject.next(false);
     this.router.navigate(['/login']);
+  }
+
+  getCurrentUser(): any {
+    if (isPlatformBrowser(this.platformId)) {
+      const user = localStorage.getItem('user');
+      return user ? JSON.parse(user) : null;
+    }
+    return null;
   }
 }
