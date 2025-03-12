@@ -10,17 +10,19 @@ import { BehaviorSubject } from 'rxjs';
 export class AuthService {
   private apiUrl = 'http://localhost:8000/api'; // URL de l'API Laravel
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
+  private errorMessageSubject = new BehaviorSubject<string | null>(null);
+
   isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
+  errorMessage$ = this.errorMessageSubject.asObservable();
 
   constructor(
     private http: HttpClient,
     private router: Router,
-    @Inject(PLATFORM_ID) private platformId: Object // Injectez PLATFORM_ID
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.checkAuthStatus();
   }
 
-  // Vérifier le statut d'authentification
   private checkAuthStatus(): void {
     if (isPlatformBrowser(this.platformId)) { 
       const token = localStorage.getItem('token');
@@ -28,7 +30,6 @@ export class AuthService {
     }
   }
 
-  // Connexion
   login(email: string, password: string) {
     console.log('Tentative de connexion avec :', { email, password }); 
     return this.http.post<{ token: string }>(`${this.apiUrl}/login`, { email, password }).subscribe({
@@ -38,29 +39,31 @@ export class AuthService {
           localStorage.setItem('token', response.token);
         }
         this.isAuthenticatedSubject.next(true);
+        this.errorMessageSubject.next(null); // Clear any previous error message
         this.router.navigate(['/']);
       },
       error: (error) => {
         console.error('Erreur de connexion', error);
+        this.errorMessageSubject.next(error.error.message || 'Une erreur s\'est produite lors de la connexion.');
       }
     });
   }
 
-  // Inscription
   register(name: string, email: string, password: string) {
     console.log('Tentative d\'inscription avec :', { name, email, password }); 
     return this.http.post(`${this.apiUrl}/register`, { name, email, password }).subscribe({
       next: () => {
         console.log('Inscription réussie'); 
+        this.errorMessageSubject.next(null); // Clear any previous error message
         this.router.navigate(['/login']);
       },
       error: (error) => {
         console.error('Erreur d\'inscription', error);
+        this.errorMessageSubject.next(error.error.message || 'Une erreur s\'est produite lors de l\'inscription.');
       }
     });
   }
 
-  // Déconnexion
   logout(): void {
     if (isPlatformBrowser(this.platformId)) { 
       localStorage.removeItem('token');

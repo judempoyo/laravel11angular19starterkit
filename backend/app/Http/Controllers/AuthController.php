@@ -14,7 +14,6 @@ use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
-
     public function register(Request $request)
     {
         try {
@@ -37,64 +36,69 @@ class AuthController extends Controller
 
         } catch (ValidationException $e) {
             return response()->json([
-                'message' => 'Validation error',
+                'message' => 'Erreur de validation',
                 'errors' => $e->errors()
             ], 422);
         } catch (\Exception $e) {
             Log::error('Registration error: ' . $e->getMessage());
             return response()->json([
-                'message' => 'Internal server error during registration'
+                'message' => 'Erreur interne du serveur lors de l\'inscription'
             ], 500);
         }
     }
-
     public function login(Request $request)
-    {
-        try {
-            $credentials = $request->validate([
-                'email' => 'required|string|email',
-                'password' => 'required|string',
-            ]);
-    
-            // Recherche de l'utilisateur avec email insensible à la casse
-            $user = User::where('email', $credentials['email'])->first();
-    
-            // Vérification du mot de passe et de l'existence de l'utilisateur
-            if (!$user || !Hash::check($credentials['password'], $user->password)) {
-                return response()->json([
-                    'message' => 'Email ou mot de passe incorrect'
-                ], 401);
-            }
-    
-            // Création du token Sanctum
-            $token = $user->createToken('auth_token')->plainTextToken;
-    
+{
+    try {
+        $credentials = $request->validate([
+            'email' => 'required|string|email',
+            'password' => 'required|string',
+        ]);
+
+        // Recherche de l'utilisateur avec email insensible à la casse
+        $user = User::where('email', $credentials['email'])->first();
+
+        // Vérification du mot de passe et de l'existence de l'utilisateur
+        if (!$user) {
             return response()->json([
-                'token' => $token,
-                'user' => $user->only(['id', 'name', 'email']),
-                'token_type' => 'Bearer' 
-            ]);
-    
-        } catch (ValidationException $e) {
-            return response()->json([
-                'message' => 'Erreur de validation',
-                'errors' => $e->errors()
-            ], 422);
-        } catch (\Exception $e) {
-            Log::error('Login error: ' . $e->getMessage() . "\n" . $e->getTraceAsString());
-            return response()->json([
-                'message' => 'Erreur interne du serveur',
-                'error' => env('APP_DEBUG') ? $e->getMessage() : null
-            ], 500);
+                'message' => 'Aucun utilisateur trouvé avec cet email.'
+            ], 404);
         }
+
+        if (!Hash::check($credentials['password'], $user->password)) {
+            return response()->json([
+                'message' => 'Mot de passe incorrect.'
+            ], 401);
+        }
+
+        // Création du token Sanctum
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return response()->json([
+            'token' => $token,
+            'user' => $user->only(['id', 'name', 'email']),
+            'token_type' => 'Bearer'
+        ]);
+
+    } catch (ValidationException $e) {
+        return response()->json([
+            'message' => 'Erreur de validation',
+            'errors' => $e->errors()
+        ], 422);
+    } catch (\Exception $e) {
+        Log::error('Login error: ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+        return response()->json([
+            'message' => 'Erreur interne du serveur',
+            'error' => env('APP_DEBUG') ? $e->getMessage() : null
+        ], 500);
     }
+}
 
     public function logout(Request $request)
     {
         try {
             $request->user()->currentAccessToken()->delete();
             return response()->json(['message' => 'Successfully logged out']);
-            
+
         } catch (\Exception $e) {
             Log::error('Logout error: ' . $e->getMessage());
             return response()->json([
@@ -107,7 +111,7 @@ class AuthController extends Controller
     {
         try {
             return response()->json($request->user()->only(['id', 'name', 'email']));
-            
+
         } catch (\Exception $e) {
             Log::error('User fetch error: ' . $e->getMessage());
             return response()->json([

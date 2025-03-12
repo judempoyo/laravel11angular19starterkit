@@ -6,7 +6,8 @@ import { isPlatformBrowser } from '@angular/common';
 import { LocalStorageService } from './services/local-storage.service';
 import { RouterOutlet } from '@angular/router';
 import { AuthService } from './services/auth.service';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators'; // Import filter
 
 @Component({
   selector: 'app-root',
@@ -18,7 +19,7 @@ import { Router } from '@angular/router';
 export class AppComponent implements OnInit, AfterViewInit {
   data: any;
   title = 'frontend';
-
+  hideHeader: boolean = false; 
   isAuthenticated: boolean = false;
 
 
@@ -37,6 +38,14 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.authService.isAuthenticated$.subscribe((isAuth) => {
       this.isAuthenticated = isAuth;
     });
+
+
+  this.router.events
+  .pipe(filter((event) => event instanceof NavigationEnd))
+  .subscribe((event: any) => {
+    this.hideHeader = ['/login', '/register'].includes(event.url);
+  });
+
   }
 
   @ViewChild('animatedText') animatedText!: ElementRef;
@@ -48,6 +57,8 @@ export class AppComponent implements OnInit, AfterViewInit {
     // Animation GSAP
     gsap.from(this.animatedText.nativeElement, { opacity: 0, y: -50, duration: 1 });
   }
+
+
 
   logout(): void {
     this.authService.logout();
