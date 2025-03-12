@@ -25,6 +25,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   isAuthenticated: boolean = false;
   isMenuOpen: boolean = false;
   
+  
   toggleMenu(): void {
     this.isMenuOpen = !this.isMenuOpen;
     this.animateMenu();
@@ -75,13 +76,13 @@ export class AppComponent implements OnInit, AfterViewInit {
         opacity: 1,
         y: 0,
         scale: 1,
-        duration: 0.3,
+        duration: 0.5,
         ease: 'power2.out'
       });
       gsap.to(this.mobileMenu.nativeElement.querySelectorAll('button'), {
         opacity: 1,
         y: 0,
-        duration: 0.3,
+        duration: 0.5,
         ease: 'power2.out',
         stagger: 0.1
       });
@@ -90,13 +91,13 @@ export class AppComponent implements OnInit, AfterViewInit {
         opacity: 0,
         y: -20,
         scale: 0.9,
-        duration: 0.3,
+        duration: 0.5,
         ease: 'power2.in'
       });
       gsap.to(this.mobileMenu.nativeElement.querySelectorAll('button'), {
         opacity: 0,
         y: -10,
-        duration: 0.3,
+        duration: 0.5,
         ease: 'power2.in',
         stagger: 0.1
       });
