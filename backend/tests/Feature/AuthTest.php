@@ -67,27 +67,27 @@ class AuthTest extends TestCase
     public function test_authenticated_user_can_logout()
     {
         $user = User::factory()->create();
-        $token = $user->createToken('test-token')->plainTextToken;
-
+        $token = $user->createToken('test-token', ['*'], 'sanctum')->plainTextToken;
+    
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $token,
             'Accept' => 'application/json'
         ])->postJson('/api/auth/logout');
-
+    
         $response->assertStatus(200);
         $this->assertEmpty($user->fresh()->tokens);
     }
-
+    
     public function test_get_authenticated_user()
     {
         $user = User::factory()->create();
-        $token = $user->createToken('test-token')->plainTextToken;
-
+        $token = $user->createToken('test-token', ['*'], 'sanctum')->plainTextToken;
+    
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $token,
             'Accept' => 'application/json'
         ])->getJson('/api/auth/user');
-
+    
         $response->assertStatus(200)
             ->assertJson([
                 'id' => $user->id,
