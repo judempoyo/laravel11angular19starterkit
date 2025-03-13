@@ -18,8 +18,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/user', [AuthController::class, 'user']);
 }); */
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/register', [AuthController::class, 'register']);
+//Route::post('/login', [AuthController::class, 'login']);
+//Route::post('/register', [AuthController::class, 'register']);
 
    // Routes protégées
    Route::middleware('auth:sanctum')->group(function () {
@@ -27,15 +27,23 @@ Route::post('/register', [AuthController::class, 'register']);
     Route::apiResource('posts', PostController::class);
     
     // Auth
-    Route::post('/logout', [AuthController::class, 'logout']);
-    Route::get('/user', [AuthController::class, 'user']);
+    /* Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/user', [AuthController::class, 'user']); */
     
     // Route d'exemple
     Route::get('/dashboard', function () {
         return response()->json(['message' => 'Accès autorisé']);
     });
 });
-
+Route::prefix('auth')->group(function () {
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login']);
+    
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('/logout', [AuthController::class, 'logout']);
+        Route::get('/user', [AuthController::class, 'user']);
+    });
+});
 Route::get('/', function () {
     return response()->json([
         'message' => 'Bienvenue sur l\'API Laravel!',
