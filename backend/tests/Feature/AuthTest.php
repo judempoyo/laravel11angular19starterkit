@@ -14,8 +14,7 @@ class AuthTest extends TestCase
     {
         parent::setUp();
         
-        // Important pour Laravel 11
-        $this->artisan('migrate')->run();
+      
     }
 
     public function test_user_registration()
@@ -67,7 +66,9 @@ class AuthTest extends TestCase
     public function test_authenticated_user_can_logout()
     {
         $user = User::factory()->create();
-        $token = $user->createToken('test-token', ['*'], 'sanctum')->plainTextToken;
+        
+        // Version corrigée sans le 3ème paramètre
+        $token = $user->createToken('test-token')->plainTextToken;
     
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $token,
@@ -81,7 +82,9 @@ class AuthTest extends TestCase
     public function test_get_authenticated_user()
     {
         $user = User::factory()->create();
-        $token = $user->createToken('test-token', ['*'], 'sanctum')->plainTextToken;
+        
+        // Version corrigée sans le 3ème paramètre
+        $token = $user->createToken('test-token')->plainTextToken;
     
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $token,

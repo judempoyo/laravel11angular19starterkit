@@ -8,7 +8,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8000/api'; // URL de l'API Laravel
+  private apiUrl = 'http://localhost:8000/api/auth/'; // URL de l'API Laravel
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
   private errorMessageSubject = new BehaviorSubject<string | null>(null);
 

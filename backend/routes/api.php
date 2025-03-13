@@ -25,11 +25,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
    Route::middleware('auth:sanctum')->group(function () {
     // Posts
     Route::apiResource('posts', PostController::class);
-    
+
     // Auth
     /* Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/user', [AuthController::class, 'user']); */
-    
+
     // Route d'exemple
     Route::get('/dashboard', function () {
         return response()->json(['message' => 'Accès autorisé']);
@@ -38,7 +38,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 Route::prefix('auth')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
-    
+
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::get('/user', [AuthController::class, 'user']);
