@@ -1,0 +1,50 @@
+{
+  "client": "Thunder Client",
+  "collectionName": "Auth API",
+  "requests": [
+    {
+      "name": "Register",
+      "method": "POST",
+      "url": "http://localhost:8000/api/register",
+      "headers": {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"name\": \"Jude Mpoyo\",\n  \"email\": \"mpoyojude0@gmail.com\",\n  \"password\": \"12345678\"\n}"
+      }
+    },
+    {
+      "name": "Login",
+      "method": "POST",
+      "url": "http://localhost:8000/api/login",
+      "headers": {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"email\": \"mpoyojude0@gmail.com\",\n  \"password\": \"12345678\"\n}"
+      }
+    },
+    {
+      "name": "User",
+      "method": "GET",
+      "url": "http://localhost:8000/api/user",
+      "headers": {
+        "Accept": "application/json",
+        "Authorization": "Bearer {{token}}"
+      }
+    },
+    {
+      "name": "Logout",
+      "method": "POST",
+      "url": "http://localhost:8000/api/logout",
+      "headers": {
+        "Accept": "application/json",
+        "Authorization": "Bearer {{token}}"
+      }
+    }
+  ]
+}

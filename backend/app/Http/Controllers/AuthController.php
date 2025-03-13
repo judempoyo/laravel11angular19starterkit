@@ -92,8 +92,47 @@ class AuthController extends Controller
         ], 500);
     }
 }
+public function logout(Request $request)
+{
+    try {
+        // Vérifie si l'utilisateur est authentifié
+        if (!$request->user()) {
+            return response()->json(['message' => 'Non authentifié'], 401);
+        }
 
-    public function logout(Request $request)
+        // Suppression du token actuel
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json(['message' => 'Déconnexion réussie']);
+
+    } catch (\Exception $e) {
+        Log::error('Logout error: ' . $e->getMessage());
+        return response()->json([
+            'message' => 'Erreur lors de la déconnexion'
+        ], 500);
+    }
+}
+
+public function user(Request $request)
+{
+    try {
+        $user = $request->user();
+        
+        // Vérifie si l'utilisateur est authentifié
+        if (!$user) {
+            return response()->json(['message' => 'Non authentifié'], 401);
+        }
+
+        return response()->json($user->only(['id', 'name', 'email']));
+
+    } catch (\Exception $e) {
+        Log::error('User fetch error: ' . $e->getMessage());
+        return response()->json([
+            'message' => 'Erreur de récupération des données utilisateur'
+        ], 500);
+    }
+}
+   /*  public function logout(Request $request)
     {
         try {
             $request->user()->currentAccessToken()->delete();
@@ -118,7 +157,7 @@ class AuthController extends Controller
                 'message' => 'Internal server error fetching user data'
             ], 500);
         }
-    }
+    } */
 
 
 }

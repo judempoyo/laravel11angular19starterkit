@@ -1,11 +1,32 @@
-<div class="min-h-screen flex items-center justify-center bg-gray-100">
-  <div class="bg-white p-8 rounded-lg shadow-md text-center">
-    <h1 class="text-3xl font-bold mb-4">{{ title }}</h1>
-    <p class="text-gray-700">Ceci est la page d'accueil de votre application.</p>
+<div class="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
+  <div class="p-8 text-center bg-white rounded-lg shadow-md dark:bg-gray-800">
+    <h1 class="mb-4 text-3xl font-bold text-gray-800 dark:text-white">{{ title }}</h1>
+    <p class="text-gray-700 dark:text-gray-400">Ceci est la page d'accueil de votre application.</p>
     <div class="mt-6">
-      <a routerLink="/login" class="text-blue-500 hover:underline">Se connecter</a>
+      <a routerLink="/login" class="text-blue-500 dark:text-blue-300 hover:underline">Se connecter</a>
       <span class="mx-2">|</span>
-      <a routerLink="/register" class="text-blue-500 hover:underline">S'inscrire</a>
+      <a routerLink="/register" class="text-blue-500 dark:text-blue-300 hover:underline">S'inscrire</a>
+    </div>
+    <div class="mt-6">
+      <h2 class="mb-2 text-xl font-bold text-gray-800 dark:text-white">Fonctionnalités</h2>
+      <ul>
+        <li><a routerLink="/feature1" class="text-blue-500 dark:text-blue-300 hover:underline">Fonctionnalité 1</a></li>
+        <li><a routerLink="/feature2" class="text-blue-500 dark:text-blue-300 hover:underline">Fonctionnalité 2</a></li>
+        <li><a routerLink="/feature3" class="text-blue-500 dark:text-blue-300 hover:underline">Fonctionnalité 3</a></li>
+      </ul>
+    </div>
+    <div class="mt-6">
+      <h2 class="mb-2 text-xl font-bold text-gray-800 dark:text-white">Informations de contact</h2>
+      <p>Adresse e-mail : <a href="mailto:contact@example.com" class="text-blue-500 dark:text-blue-300 hover:underline">contact&#64;example.com</a></p>
+      <p>Numéro de téléphone : 01 23 45 67 89</p>
+    </div>
+    <div class="mt-6">
+      <h2 class="mb-2 text-xl font-bold text-gray-800 dark:text-white">Réseaux sociaux</h2>
+      <ul>
+        <li><a href="https://www.facebook.com/example" class="text-blue-500 dark:text-blue-300 hover:underline">Facebook</a></li>
+        <li><a href="https://www.twitter.com/example" class="text-blue-500 dark:text-blue-300 hover:underline">Twitter</a></li>
+        <li><a href="https://www.linkedin.com/example" class="text-blue-500 dark:text-blue-300 hover:underline">LinkedIn</a></li>
+      </ul>
     </div>
   </div>
 </div>
