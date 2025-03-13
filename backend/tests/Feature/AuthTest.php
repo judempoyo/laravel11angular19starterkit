@@ -20,7 +20,7 @@ class AuthTest extends TestCase
 
     public function test_user_registration()
     {
-        $response = $this->postJson('/api/register', [
+        $response = $this->postJson('/api/auth/register', [
             'name' => 'Test User',
             'email' => 'test@example.com',
             'password' => 'Password123!',
@@ -41,7 +41,7 @@ class AuthTest extends TestCase
             'password' => bcrypt('Password123!')
         ]);
 
-        $response = $this->postJson('/api/login', [
+        $response = $this->postJson('/api/auth/login', [
             'email' => 'test@example.com',
             'password' => 'Password123!'
         ]);
@@ -56,7 +56,7 @@ class AuthTest extends TestCase
 
     public function test_user_login_with_invalid_credentials()
     {
-        $response = $this->postJson('/api/login', [
+        $response = $this->postJson('/api/auth/login', [
             'email' => 'fake@example.com',
             'password' => 'WrongPassword!'
         ]);
@@ -72,7 +72,7 @@ class AuthTest extends TestCase
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $token,
             'Accept' => 'application/json'
-        ])->postJson('/api/logout');
+        ])->postJson('/api/auth/logout');
 
         $response->assertStatus(200);
         $this->assertEmpty($user->fresh()->tokens);
@@ -86,7 +86,7 @@ class AuthTest extends TestCase
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $token,
             'Accept' => 'application/json'
-        ])->getJson('/api/user');
+        ])->getJson('/api/auth/user');
 
         $response->assertStatus(200)
             ->assertJson([

@@ -95,41 +95,28 @@
     public function logout(Request $request)
     {
         try {
-            // Vérifie si l'utilisateur est authentifié
-            if (!$request->user()) {
-                return response()->json(['message' => 'Non authentifié'], 401);
-            }
-
-            // Suppression du token actuel
-            $request->user()->currentAccessToken()->delete();
-
+            // Nouvelle méthode recommandée pour Laravel 11
+            $request->user()->tokens()->where('id', $request->user()->currentAccessToken()->id)->delete();
+    
             return response()->json(['message' => 'Déconnexion réussie']);
-
+    
         } catch (\Exception $e) {
             Log::error('Logout error: ' . $e->getMessage());
-            return response()->json([
-                'message' => 'Erreur lors de la déconnexion'
-            ], 500);
+            return response()->json(['message' => 'Erreur de déconnexion'], 500);
         }
     }
-
+    
     public function user(Request $request)
     {
         try {
-            $user = $request->user();
-
-            // Vérifie si l'utilisateur est authentifié
-            if (!$user) {
-                return response()->json(['message' => 'Non authentifié'], 401);
-            }
-
-            return response()->json($user->only(['id', 'name', 'email']));
-
+            // Méthode plus explicite
+            return response()->json([
+                'user' => $request->user()->only(['id', 'name', 'email'])
+            ]);
+    
         } catch (\Exception $e) {
             Log::error('User fetch error: ' . $e->getMessage());
-            return response()->json([
-                'message' => 'Erreur de récupération des données utilisateur'
-            ], 500);
+            return response()->json(['message' => 'Erreur de récupération'], 500);
         }
     }
     /*  public function logout(Request $request)
