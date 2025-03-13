@@ -13,11 +13,11 @@ export class ApiService {
 
 
   login(email: string, password: string) {
-    return this.http.post(`${this.apiUrl}/login`, { email, password });
+    return this.http.post(`${this.apiUrl}/auth/login`, { email, password });
   }
 
   register(name: string, email: string, password: string) {
-    return this.http.post(`${this.apiUrl}/register`, { name, email, password });
+    return this.http.post(`${this.apiUrl}/auth/register`, { name, email, password });
   }
 
   getPosts() {
