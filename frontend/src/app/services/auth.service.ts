@@ -8,7 +8,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8000/api/auth/'; // URL de l'API Laravel
+  private apiUrl = 'http://localhost:8000/api'; 
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
   private errorMessageSubject = new BehaviorSubject<string | null>(null);
 
@@ -32,12 +32,12 @@ export class AuthService {
 
   login(email: string, password: string) {
     console.log('Tentative de connexion avec :', { email, password }); 
-    return this.http.post<{ token: string, user: any }>(`${this.apiUrl}/login`, { email, password }).subscribe({
+    return this.http.post<{ token: string, user: any }>(`${this.apiUrl}/auth/login`, { email, password }).subscribe({
       next: (response) => {
         console.log('Réponse de l\'API :', response); 
         if (isPlatformBrowser(this.platformId)) { 
           localStorage.setItem('token', response.token);
-          localStorage.setItem('user', JSON.stringify(response.user)); // Stocker les données de l'utilisateur
+          localStorage.setItem('user', JSON.stringify(response.user)); 
         }
         this.isAuthenticatedSubject.next(true);
         this.errorMessageSubject.next(null); 
@@ -51,7 +51,7 @@ export class AuthService {
   }
   register(name: string, email: string, password: string) {
     console.log('Tentative d\'inscription avec :', { name, email, password }); 
-    return this.http.post(`${this.apiUrl}/register`, { name, email, password }).subscribe({
+    return this.http.post(`${this.apiUrl}/auth/register`, { name, email, password }).subscribe({
       next: () => {
         console.log('Inscription réussie'); 
         this.errorMessageSubject.next(null); // Clear any previous error message
