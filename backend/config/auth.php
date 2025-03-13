@@ -41,12 +41,15 @@ return [
         'provider' => 'users',
     ], */
 
+    'api' => [
+        'driver' => 'sanctum', // Modifier 'token' en 'sanctum'
+        'provider' => 'users',
+        'hash' => false,
+    ],
     'sanctum' => [
         'driver' => 'sanctum',
         'provider' => 'users',
-        //'hash' => false,
     ],
-],
     /*
     |--------------------------------------------------------------------------
     | User Providers
